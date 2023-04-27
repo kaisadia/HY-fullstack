@@ -1,6 +1,8 @@
 import React from 'react';
+import people from '../services/people';
 
-function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons, setPersons}) {
+
+function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons, setPersons, setNotification}) {
 
     const addPerson = (event) => {
         event.preventDefault()
@@ -11,10 +13,18 @@ function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons, s
         }
       
       persons.some(person => person.name.toLowerCase() === personObject.name.toLowerCase()) ? 
-      alert(`${personObject.name} is already added to phonebook`) 
-      : setPersons(persons.concat(personObject));
-      setNewName('') 
-      setNewNumber('')
+      alert(`${personObject.name} is already added to phonebook`) || setNewName('') || setNewNumber('')
+      :  people
+      .create(personObject)
+        .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        setNewName('') 
+        setNewNumber('')
+        setNotification(`${personObject.name} added to phonebook`)
+        setTimeout(() => {
+          setNotification(null)
+        }, 3000)
+      })
       }
 
       const handleNameAdd = (event) => {
@@ -24,6 +34,8 @@ function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons, s
        const handleNumberAdd = (event) => {
         setNewNumber(event.target.value)
        }
+
+    
 
     return (
         <div>

@@ -1,0 +1,9 @@
+.added-person {
+    background-color: lightgrey;
+    color: green;
+    font-size: 20px;
+    border-radius: 5px;
+    border-style: solid;
+    padding: 10px;
+    margin-bottom: 10px;
+}
