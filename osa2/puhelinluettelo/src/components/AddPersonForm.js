@@ -2,7 +2,8 @@ import React from 'react';
 import people from '../services/people';
 
 
-function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons, setPersons, setNotification}) {
+function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons, 
+  setPersons, setNotification, setErrNotification}) {
 
     const addPerson = (event) => {
         event.preventDefault()
@@ -23,7 +24,16 @@ function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons, s
         setNotification(`${personObject.name} added to phonebook`)
         setTimeout(() => {
           setNotification(null)
-        }, 3000)
+        }, 2000)
+      })
+      .catch(error => {
+        console.log(error.request.response);
+        setNewName('') 
+        setNewNumber('')
+        setErrNotification(error.request.response)
+        setTimeout(() => {
+          setErrNotification(null)
+        }, 2000)
       })
       }
 

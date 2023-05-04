@@ -14,7 +14,7 @@ const personsToShow = persons.filter(person => {
     const updatedPersons = persons.filter(person => person.id !== id)
     const confirm = window.confirm(`Are you sure you want to delete ${persons.find(x => x.id === id).name}?`) 
     if(confirm === true) {
-        axios.delete(`http://localhost:3001/api/persons/${id}`) 
+        axios.delete(`/api/persons/${id}`) 
         .then(() => console.log(`deleted ${id}`))
         .then(setPersons(updatedPersons))
     } else {
