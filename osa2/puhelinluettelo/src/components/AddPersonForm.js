@@ -30,7 +30,7 @@ function AddPersonForm({newName, setNewName, newNumber, setNewNumber, persons,
         console.log(error.request.response);
         setNewName('') 
         setNewNumber('')
-        setErrNotification(error.request.response)
+        setErrNotification(JSON.parse(error.request.response).error.split(',')[0])
         setTimeout(() => {
           setErrNotification(null)
         }, 2000)
