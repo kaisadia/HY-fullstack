@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { createSlice } from "@reduxjs/toolkit";
 
 const anecdotesAtStart = [
   "If it hurts, do it more often",
@@ -20,65 +20,33 @@ const asObject = (anecdote) => {
 };
 
 const initialState = anecdotesAtStart.map(asObject);
-const initialFilter = "";
 
-const anecdoteReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "VOTE":
-      const id = action.payload.id;
-      const anecdoteToChange = state.find((n) => n.id === id);
+const anecdoteSlice = createSlice({
+  name: "anecdotes",
+  initialState: initialState,
+  reducers: {
+    voteAnecdote(state, action) {
+      const anecdoteToChange = action.payload;
       const changedAnecdote = {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1,
       };
       return state.map((anecdote) =>
-        anecdote.id !== id ? anecdote : changedAnecdote
+        anecdote.id === anecdoteToChange.id ? changedAnecdote : anecdote
       );
-    case "ADD":
-      return [...state, action.payload];
-    default:
-      return state;
-  }
-};
-
-const filterReducer = (state = initialFilter, action) => {
-  switch (action.type) {
-    case "FILTER":
-      const content = action.payload.content;
-      return content;
-    default:
-      return state;
-  }
-};
-
-const reducer = combineReducers({
-  anecdotes: anecdoteReducer,
-  filter: filterReducer,
+    },
+    addAnecdote(state, action) {
+      //console.log(JSON.parse(JSON.stringify(state)));
+      const addedAnecdote = {
+        content: action.payload,
+        id: getId(),
+        votes: 0,
+      };
+      //console.log(addedAnecdote);
+      return [...state, addedAnecdote];
+    },
+  },
 });
 
-export const vote = (id) => {
-  return {
-    type: "VOTE",
-    payload: { id },
-  };
-};
-
-export const addAnecdote = (content) => {
-  return {
-    type: "ADD",
-    payload: {
-      content,
-      id: getId(),
-      votes: 0,
-    },
-  };
-};
-
-export const filter = (content) => {
-  return {
-    type: "FILTER",
-    payload: { content },
-  };
-};
-
-export default reducer;
+export const { voteAnecdote, addAnecdote } = anecdoteSlice.actions;
+export default anecdoteSlice.reducer;

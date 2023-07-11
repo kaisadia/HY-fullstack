@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { filter } from "../reducers/anecdoteReducer";
+import { useDispatch } from "react-redux";
+import { setFilter } from "../reducers/filterReducer";
 
 const Filter = () => {
   const dispatch = useDispatch();
@@ -8,7 +8,7 @@ const Filter = () => {
   const handleChange = (event) => {
     event.preventDefault();
     const content = event.target.value;
-    dispatch(filter(content));
+    dispatch(setFilter(content));
   };
 
   const style = {
