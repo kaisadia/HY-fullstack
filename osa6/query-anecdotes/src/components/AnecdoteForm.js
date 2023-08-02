@@ -1,12 +1,21 @@
 import { createAnecdote } from "../requests";
-import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import { useContext } from "react";
+import NotificationContext from "../NotificationContext";
 
 const AnecdoteForm = () => {
+  const [notification, notificationDispatch] = useContext(NotificationContext);
   const queryClient = useQueryClient();
 
   const newAnecdoteMutation = useMutation(createAnecdote, {
     onSuccess: () => {
       queryClient.invalidateQueries("anecdotes"); //invalidoi edellisen listan, jotta uusi anekdootti näkyy
+    },
+    onError: () => {
+      notificationDispatch({ type: "ERROR" });
+      setTimeout(() => {
+        notificationDispatch({ type: "TIMEOUT" });
+      }, 2000);
     },
   });
 
@@ -14,8 +23,12 @@ const AnecdoteForm = () => {
     event.preventDefault();
     const content = event.target.anecdote.value;
     event.target.anecdote.value = "";
-    console.log("new anecdote");
+    console.log("new anecdote added");
     newAnecdoteMutation.mutate({ content, votes: 0 });
+    notificationDispatch({ type: "ADD" });
+    setTimeout(() => {
+      notificationDispatch({ type: "TIMEOUT" });
+    }, 2000);
   };
 
   return (
