@@ -1,16 +1,43 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
 );
+
+const Anecdote = ({ anecdotes }) => {
+  const id = useParams().id;
+  const anecdote = anecdotes.find((n) => n.id === Number(id));
+  return (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <div>Author: {anecdote.author}</div>
+      <div>
+        For more info see:
+        <Link to={anecdote.info}> {anecdote.info}</Link>
+      </div>
+      <div>
+        <strong>{anecdote.votes} votes</strong>
+      </div>
+    </div>
+  );
+};
 
 const About = () => (
   <div>
@@ -45,10 +72,27 @@ const Footer = () => (
   </div>
 );
 
-const CreateNew = ({ addNew }) => {
+const Notification = ({ notification }) => {
+  const style = {
+    border: "solid",
+    padding: 10,
+    borderWidth: 1,
+    marginBottom: 5,
+  };
+
+  return !notification ? (
+    <div>{notification}</div>
+  ) : (
+    <div style={style}>{notification}</div>
+  );
+};
+
+const CreateNew = ({ addNew, setNotification }) => {
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,6 +102,11 @@ const CreateNew = ({ addNew }) => {
       info,
       votes: 0,
     });
+    navigate("/");
+    setNotification(`Added ${e.target.content.value}`);
+    setTimeout(() => {
+      setNotification(null);
+    }, 2000);
   };
 
   return (
@@ -94,7 +143,7 @@ const CreateNew = ({ addNew }) => {
   );
 };
 
-const Menu = ({ anecdotes }) => {
+const Menu = ({ anecdotes, addNew, setNotification }) => {
   const padding = {
     paddingRight: 5,
   };
@@ -114,8 +163,17 @@ const Menu = ({ anecdotes }) => {
       </div>
 
       <Routes>
+        <Route
+          path="/anecdotes/:id"
+          element={<Anecdote anecdotes={anecdotes} />}
+        />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path="/createnew" element={<CreateNew />} />
+        <Route
+          path="/createnew"
+          element={
+            <CreateNew addNew={addNew} setNotification={setNotification} />
+          }
+        />
         <Route path="/about" element={<About />} />
       </Routes>
 
@@ -167,7 +225,15 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} addNew={addNew} />
+      <Notification
+        setNotification={setNotification}
+        notification={notification}
+      />
+      <Menu
+        anecdotes={anecdotes}
+        addNew={addNew}
+        setNotification={setNotification}
+      />
       <Footer />
     </div>
   );
