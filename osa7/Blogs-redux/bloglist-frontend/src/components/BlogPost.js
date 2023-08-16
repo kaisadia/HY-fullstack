@@ -1,24 +1,15 @@
 import React from 'react';
-import { useState } from 'react';
 import Togglable from './Togglable';
-import blogService from '../services/blogs';
 import { useDispatch } from 'react-redux';
-import {
-  removeNotification,
-  setNotification,
-} from '../reducers/NotificationReducer';
+import { notification } from '../reducers/NotificationReducer';
+import { updateLikes, removeBlog } from '../reducers/BlogReducer';
 
 function BlogPost({ blog }) {
   const dispatch = useDispatch();
-  const [likes, setLikes] = useState(blog.likes);
 
-  const updateLikes = () => {
-    const blogObject = {
-      likes: likes + 1,
-    };
+  const handleUpdateLikes = async () => {
     try {
-      blogService.update(blog.id, blogObject);
-      setLikes(likes + 1);
+      dispatch(updateLikes(blog.id, blog));
     } catch (error) {
       console.log(error);
     }
@@ -28,11 +19,8 @@ function BlogPost({ blog }) {
     if (window.confirm(`Do you really want to delete "${blog.title}"?`))
       try {
         console.log(`deleted post with id ${blog.id}`);
-        blogService.remove(blog.id);
-        dispatch(setNotification(`Deleted ${blog.title}`));
-        setTimeout(() => {
-          dispatch(removeNotification());
-        }, 2500);
+        dispatch(removeBlog(blog.id));
+        dispatch(notification(`Deleted ${blog.title}`));
       } catch (error) {
         console.log(error);
       }
@@ -44,7 +32,7 @@ function BlogPost({ blog }) {
       <Togglable button1="Show" button2="Hide">
         <p>URL: {blog.url}</p>
         <p>
-          Likes: {blog.likes} <button onClick={updateLikes}>Like</button>
+          Likes: {blog.likes} <button onClick={handleUpdateLikes}>Like</button>
         </p>
         <p>Author: {blog.author}</p>
         <button onClick={deleteHandler}>Remove</button>

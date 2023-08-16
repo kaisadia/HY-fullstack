@@ -1,15 +1,9 @@
 import React from 'react';
-import blogService from '../services/blogs';
 import { useDispatch } from 'react-redux';
-import {
-  removeNotification,
-  setNotification,
-} from '../reducers/NotificationReducer';
+import { notification } from '../reducers/NotificationReducer';
+import { createBlogpost } from '../reducers/BlogReducer';
 
 const BlogForm = ({
-  blogs,
-  setBlogs,
-  setError,
   blogFormRef,
   title,
   setTitle,
@@ -27,23 +21,16 @@ const BlogForm = ({
       author: author,
       url: url,
     };
-    dispatch(setNotification(`Added ${blogObject.title}`));
-    setTimeout(() => {
-      dispatch(removeNotification());
-    }, 2500);
+    dispatch(notification(`Added ${blogObject.title}`));
 
     try {
-      const returnedPost = await blogService.create(blogObject);
-      setBlogs([returnedPost, ...blogs]);
+      dispatch(createBlogpost(blogObject));
       setTitle('');
       setAuthor('');
       setUrl('');
       blogFormRef.current.toggleVisibility();
     } catch (error) {
-      setError('Oops, something went wrong');
-      setTimeout(() => {
-        setError(null);
-      }, 4000);
+      dispatch(notification('Oops, something went wrong'));
       console.log(error);
     }
   };
