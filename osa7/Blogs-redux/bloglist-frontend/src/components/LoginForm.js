@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState } from 'react';
-import { setLoggedinUser } from '../reducers/UserReducer';
+import { setLoggedinUser } from '../reducers/LoginReducer';
 
 import { useDispatch } from 'react-redux';
 
-function LoginForm({ setError }) {
+function LoginForm() {
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
@@ -19,7 +19,6 @@ function LoginForm({ setError }) {
     dispatch(setLoggedinUser(credentials)); //kirjaudutaan käyttäjänimellä ja salasanalla
     setUsername('');
     setPassword('');
-    setError(null);
   };
 
   return (

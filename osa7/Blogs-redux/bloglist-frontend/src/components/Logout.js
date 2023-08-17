@@ -1,13 +1,13 @@
 import React from 'react';
 
-function Logout({ user }) {
+function Logout({ login }) {
   const clickHandler = () => {
     window.localStorage.clear();
   };
 
   return (
     <div>
-      Welcome {user.name}
+      <p>Welcome {login.name}</p>
       <button onClick={clickHandler}>Logout</button>
     </div>
   );

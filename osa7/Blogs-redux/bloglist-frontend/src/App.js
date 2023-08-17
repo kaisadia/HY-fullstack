@@ -7,21 +7,25 @@ import BlogForm from './components/BlogForm';
 import Togglable from './components/Togglable';
 import Logout from './components/Logout';
 import { initializeBlogs } from './reducers/BlogReducer';
+
 import BlogList from './components/BlogList';
 import { useSelector } from 'react-redux';
-import { loginUser } from './reducers/UserReducer';
+import { loginUser } from './reducers/LoginReducer';
+import { initializeUsers } from './reducers/UserReducer';
+import UsersList from './components/UsersList';
+import './components/oneUser.css';
 
 const App = () => {
-  const user = useSelector((state) => state.user);
+  const login = useSelector((state) => state.login);
   const dispatch = useDispatch();
 
-  const [blogs, setBlogs] = useState([]);
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
   useEffect(() => {
     dispatch(initializeBlogs());
+    dispatch(initializeUsers());
   }, [dispatch]); //hakee aina kun blogeissa on tapahtunut muutos. Jos tyhjä, vain kerran
 
   useEffect(() => {
@@ -40,19 +44,29 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       <Notification />
-      {!user && <LoginForm user={user} blogs={blogs} />}
-      {user && (
+      {!login && <LoginForm />}
+
+      {login && (
         <div>
-          <Logout user={user} />
+          <Logout login={login} />
+
+          <div className="row">
+            <div className="column">
+              <h2>Users</h2>
+            </div>
+            <div className="column">
+              <p>Blogs created</p>
+            </div>
+          </div>
+          <UsersList />
+
           <Togglable
-            user={user}
+            login={login}
             ref={blogFormRef}
             button1="Create"
             button2="Cancel"
           >
             <BlogForm
-              setBlogs={setBlogs}
-              user={user}
               blogFormRef={blogFormRef}
               title={title}
               url={url}
@@ -63,7 +77,7 @@ const App = () => {
             />
           </Togglable>
           <div>
-            <BlogList user={user} />
+            <BlogList login={login} />
           </div>
         </div>
       )}
