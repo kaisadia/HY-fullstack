@@ -1,17 +1,16 @@
 import React from 'react';
-import BlogPost from './BlogPost';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { Link } from 'react-router-dom';
 
-function BlogList({ login }) {
-  const blogs = useSelector((state) => state.blogs);
-
+function BlogList({ login, blogs }) {
   return (
     <div>
       {blogs
         .filter((blog) => blog.user.username === login.username)
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <BlogPost key={blog.id} blog={blog} blogs={blogs} />
+          <Link to={`/blogs/${blog.id}`} key={blog.id}>
+            <div>{blog.title}</div>
+          </Link>
         ))}
     </div>
   );

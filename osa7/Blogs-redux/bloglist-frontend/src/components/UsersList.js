@@ -1,10 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
-import OneUser from './OneUser';
+import { Link } from 'react-router-dom';
 
-function UsersList() {
-  const users = useSelector((state) => state.users);
-
+function UsersList({ users }) {
   if (!users) {
     return null;
   }
@@ -12,7 +9,9 @@ function UsersList() {
   return (
     <div>
       {users.map((user) => (
-        <OneUser key={user.id} user={user} users={users} />
+        <Link to={`/users/${user.id}`} key={user.id}>
+          <div>{user.name}</div>
+        </Link>
       ))}
     </div>
   );

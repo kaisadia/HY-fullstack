@@ -1,27 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import blogService from './services/blogs';
-import LoginForm from './components/LoginForm';
-import Notification from './components/Notification';
-import BlogForm from './components/BlogForm';
-import Togglable from './components/Togglable';
-import Logout from './components/Logout';
 import { initializeBlogs } from './reducers/BlogReducer';
-
-import BlogList from './components/BlogList';
-import { useSelector } from 'react-redux';
 import { loginUser } from './reducers/LoginReducer';
 import { initializeUsers } from './reducers/UserReducer';
 import UsersList from './components/UsersList';
 import './components/oneUser.css';
+import { Routes, Route, Link } from 'react-router-dom';
+import OneUser from './components/OneUser';
+import Home from './components/Home';
+import { useSelector } from 'react-redux';
+import OneBlog from './components/OneBlog';
 
 const App = () => {
-  const login = useSelector((state) => state.login);
   const dispatch = useDispatch();
-
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  const users = useSelector((state) => state.users);
+  const blogs = useSelector((state) => state.blogs);
+  const login = useSelector((state) => state.login);
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -38,49 +33,27 @@ const App = () => {
     }
   }, []);
 
-  const blogFormRef = useRef();
+  const padding = {
+    padding: 5,
+  };
 
   return (
     <div>
-      <h2>Blogs</h2>
-      <Notification />
-      {!login && <LoginForm />}
+      <div>
+        <Link style={padding} to="/">
+          home
+        </Link>
+        <Link style={padding} to="/users">
+          users
+        </Link>
+      </div>
 
-      {login && (
-        <div>
-          <Logout login={login} />
-
-          <div className="row">
-            <div className="column">
-              <h2>Users</h2>
-            </div>
-            <div className="column">
-              <p>Blogs created</p>
-            </div>
-          </div>
-          <UsersList />
-
-          <Togglable
-            login={login}
-            ref={blogFormRef}
-            button1="Create"
-            button2="Cancel"
-          >
-            <BlogForm
-              blogFormRef={blogFormRef}
-              title={title}
-              url={url}
-              author={author}
-              setTitle={setTitle}
-              setUrl={setUrl}
-              setAuthor={setAuthor}
-            />
-          </Togglable>
-          <div>
-            <BlogList login={login} />
-          </div>
-        </div>
-      )}
+      <Routes>
+        <Route path="/" element={<Home users={users} login={login} />} />
+        <Route path="/users/:id" element={<OneUser users={users} />} />
+        <Route path="/users" element={<UsersList users={users} />} />
+        <Route path="/blogs/:id" element={<OneBlog blogs={blogs} />} />
+      </Routes>
     </div>
   );
 };
