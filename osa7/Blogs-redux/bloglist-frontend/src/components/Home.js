@@ -27,9 +27,9 @@ const Home = ({ users, login }) => {
             </div>
             <div className="column">
               <p>Blogs created</p>
-              <UsersList users={users} />
             </div>
           </div>
+          <UsersList users={users} />
         </div>
       )}
     </div>

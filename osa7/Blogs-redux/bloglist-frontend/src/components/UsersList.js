@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './oneUser.css';
 
 function UsersList({ users }) {
   if (!users) {
@@ -9,9 +10,12 @@ function UsersList({ users }) {
   return (
     <div>
       {users.map((user) => (
-        <Link to={`/users/${user.id}`} key={user.id}>
-          <div>{user.name}</div>
-        </Link>
+        <div key={user.id} className="row">
+          <Link to={`/users/${user.id}`}>
+            <div>{user.name}</div>
+          </Link>
+          <div className="column">{user.blogs.length}</div>
+        </div>
       ))}
     </div>
   );
