@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './oneUser.css';
+import styled from 'styled-components';
 
 function UsersList({ users }) {
   if (!users) {
@@ -10,15 +10,26 @@ function UsersList({ users }) {
   return (
     <div>
       {users.map((user) => (
-        <div key={user.id} className="row">
+        <Row key={user.id}>
           <Link to={`/users/${user.id}`}>
             <div>{user.name}</div>
           </Link>
-          <div className="column">{user.blogs.length}</div>
-        </div>
+          <Column>{user.blogs.length}</Column>
+        </Row>
       ))}
     </div>
   );
 }
 
 export default UsersList;
+
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 1em;
+`;
+
+const Column = styled.div`
+  width: 50%;
+  font-weight: bold;
+`;

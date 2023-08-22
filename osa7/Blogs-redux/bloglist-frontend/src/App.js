@@ -5,12 +5,12 @@ import { initializeBlogs } from './reducers/BlogReducer';
 import { loginUser } from './reducers/LoginReducer';
 import { initializeUsers } from './reducers/UserReducer';
 import UsersList from './components/UsersList';
-import './components/oneUser.css';
 import { Routes, Route, Link } from 'react-router-dom';
 import OneUser from './components/OneUser';
 import Home from './components/Home';
 import { useSelector } from 'react-redux';
 import OneBlog from './components/OneBlog';
+import styled from 'styled-components';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,14 +39,14 @@ const App = () => {
 
   return (
     <div>
-      <div>
+      <Navigation>
         <Link style={padding} to="/">
           home
         </Link>
         <Link style={padding} to="/users">
           users
         </Link>
-      </div>
+      </Navigation>
 
       <Routes>
         <Route path="/" element={<Home users={users} login={login} />} />
@@ -59,3 +59,8 @@ const App = () => {
 };
 
 export default App;
+
+const Navigation = styled.div`
+  background: Lightblue;
+  padding: 1em;
+`;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useImperativeHandle, forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
@@ -21,10 +22,10 @@ const Togglable = forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.button1}</button>
+        <Button onClick={toggleVisibility}>{props.button1}</Button>
       </div>
       <div style={showWhenVisible} className="togglableContent">
-        <button onClick={toggleVisibility}>{props.button2}</button>
+        <Button onClick={toggleVisibility}>{props.button2}</Button>
         {props.children}
       </div>
     </div>
@@ -39,3 +40,12 @@ Togglable.propTypes = {
 Togglable.displayName = 'Togglable';
 
 export default Togglable;
+
+const Button = styled.button`
+  background: Lightblue;
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid Cornflowerblue;
+  border-radius: 3px;
+`;
