@@ -1,6 +1,3 @@
-import { ALL_BOOKS } from "../queries";
-import { useQuery } from "@apollo/client";
-
 const Books = (props) => {
   if (!props.show) {
     return null;
