@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries";
 
-const Authors = ({ show, authors }) => {
+const Authors = ({ show, authors, setMessage }) => {
   const [born, setBorn] = useState("");
   const [name, setName] = useState("");
 
@@ -24,6 +24,14 @@ const Authors = ({ show, authors }) => {
   const setBirthyear = (event) => {
     event.preventDefault();
     editAuthor({ variables: { name, setBornTo: Number(born) } });
+
+    if (!authors.includes(name)) {
+      setMessage("Author not found");
+      setTimeout(() => {
+        setMessage(null);
+      }, 2000);
+    }
+
     setBorn("");
     setName("");
   };
