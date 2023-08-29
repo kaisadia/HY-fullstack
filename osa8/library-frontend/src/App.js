@@ -5,6 +5,7 @@ import NewBook from "./components/NewBook";
 import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 import { useQuery } from "@apollo/client";
 import Notify from "./components/Notify";
+import SetBirthyear from "./components/SetBirthyear";
 
 const App = () => {
   const [page, setPage] = useState("authors");
