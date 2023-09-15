@@ -43,7 +43,6 @@ const typeDefs = `
   type Author {
     name: String!
     born: Int
-    bookCount: Int
     id: ID!
   }
 
@@ -119,11 +118,12 @@ const resolvers = {
   Mutation: {
     addBook: async (root, args, context) => {
       let author = await Author.findOne({ name: args.author });
+
       if (!author) {
         author = new Author({ name: args.author });
+
         try {
           await author.save();
-          console.log(author);
         } catch (error) {
           throw new GraphQLError("adding author failed", {
             extensions: {
@@ -137,8 +137,9 @@ const resolvers = {
       const book = new Book({ ...args, author });
       try {
         await book.save();
-        console.log(book);
+        console.log(author);
       } catch (error) {
+        console.log(author);
         throw new GraphQLError("adding book failed", {
           extensions: {
             code: "BAD_USER_INPUT",
