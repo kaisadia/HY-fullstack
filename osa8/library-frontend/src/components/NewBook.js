@@ -20,10 +20,10 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault();
     addBook({
-      variables: { title, published: Number(published), author, genre },
+      variables: { title, published: Number(published), author, genres },
     });
 
-    console.log("added book");
+    console.log({ title, published: Number(published), author, genres });
 
     setTitle("");
     setPublished("");

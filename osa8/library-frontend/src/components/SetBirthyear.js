@@ -3,20 +3,11 @@ import { useMutation } from "@apollo/client";
 import { useState } from "react";
 import { ALL_AUTHORS, EDIT_AUTHOR } from "../queries";
 
-function SetBirthyear({ authors, show, setMessage }) {
+function SetBirthyear({ authors, show }) {
   const [born, setBorn] = useState("");
   const [name, setName] = useState("");
 
-  const [editAuthor] = useMutation(EDIT_AUTHOR, {
-    refetchQueries: [{ query: ALL_AUTHORS }],
-    onError: (error) => {
-      const errors = error.graphQLErrors[0].extensions.error.errors;
-      const messages = Object.values(errors)
-        .map((e) => e.message)
-        .join("\n");
-      console.log(messages);
-    },
-  });
+  const [editAuthor] = useMutation(EDIT_AUTHOR);
 
   if (!show) {
     return null;

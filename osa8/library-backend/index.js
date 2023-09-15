@@ -1,4 +1,4 @@
-const { ApolloServer, AuthenticationError } = require("@apollo/server");
+const { ApolloServer } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
 const { GraphQLError } = require("graphql");
 const mongoose = require("mongoose");
@@ -118,15 +118,12 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args, context) => {
-      if (!context.currentUser) {
-        throw new AuthenticationError("not authenticated");
-      }
-
       let author = await Author.findOne({ name: args.author });
       if (!author) {
         author = new Author({ name: args.author });
         try {
           await author.save();
+          console.log(author);
         } catch (error) {
           throw new GraphQLError("adding author failed", {
             extensions: {
@@ -140,6 +137,7 @@ const resolvers = {
       const book = new Book({ ...args, author });
       try {
         await book.save();
+        console.log(book);
       } catch (error) {
         throw new GraphQLError("adding book failed", {
           extensions: {
@@ -153,7 +151,7 @@ const resolvers = {
 
     editAuthor: async (root, args, context) => {
       if (!context.currentUser) {
-        throw new AuthenticationError("not authenticated");
+        throw new GraphQLError("not authenticated");
       }
       const { name, setBornTo } = args;
       const authorToUpdate = await Author.findOne({ name: name });
