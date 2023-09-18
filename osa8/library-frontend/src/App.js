@@ -2,20 +2,31 @@ import { useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
-import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
-import { useQuery } from "@apollo/client";
 import Notify from "./components/Notify";
-import SetBirthyear from "./components/SetBirthyear";
+import LoginForm from "./components/LoginForm";
+import { useApolloClient } from "@apollo/client";
 
 const App = () => {
+  const [token, setToken] = useState(null);
   const [page, setPage] = useState("authors");
   const [message, setMessage] = useState(null);
 
-  const authorResult = useQuery(ALL_AUTHORS);
-  const booksResult = useQuery(ALL_BOOKS);
+  const client = useApolloClient();
 
-  if (authorResult.loading || booksResult.loading) {
-    return <div>loading...</div>;
+  const logout = () => {
+    setToken(null);
+    localStorage.clear();
+    client.resetStore(); //nollaa välimuistin
+  };
+
+  if (!token) {
+    return (
+      <div>
+        <Notify message={message} />
+        <h2>Login</h2>
+        <LoginForm setToken={setToken} setMessage={setMessage} />
+      </div>
+    );
   }
 
   return (
@@ -26,15 +37,9 @@ const App = () => {
         <button onClick={() => setPage("add")}>add book</button>
       </div>
       <Notify message={message} />
-
-      <Authors
-        show={page === "authors"}
-        authors={authorResult.data.allAuthors}
-        setMessage={setMessage}
-      />
-
-      <Books show={page === "books"} books={booksResult.data.allBooks} />
-
+      <button onClick={logout}>logout</button>
+      <Books show={page === "books"} />
+      <Authors show={page === "authors"} setMessage={setMessage} />
       <NewBook show={page === "add"} />
     </div>
   );

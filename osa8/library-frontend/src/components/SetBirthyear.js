@@ -30,7 +30,7 @@ function SetBirthyear({ authors, show }) {
           <select value={name} onChange={({ target }) => setName(target.value)}>
             <option value="">Select an author</option>{" "}
             {/* Giving an empty value as the first value  */}
-            {authors.map((author) => (
+            {authors.data.allAuthors.map((author) => (
               <option key={author.name} value={author.name}>
                 {author.name}
               </option>

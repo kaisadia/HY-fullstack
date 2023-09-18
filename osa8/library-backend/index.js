@@ -30,6 +30,7 @@ const typeDefs = `
   allBooks (author: String, genre: String): [Book!]
   allAuthors: [Author!]
   me: User
+  booksByGenre: [Book!]
   }
 
   type Book {
@@ -117,6 +118,9 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args, context) => {
+      if (!context.currentUser) {
+        throw new GraphQLError("not authenticated");
+      }
       let author = await Author.findOne({ name: args.author });
 
       if (!author) {
