@@ -10,7 +10,7 @@ import { setContext } from "@apollo/client/link/context";
 
 //uuden käyttäjän lisääminen vaatii tokenin lähettämisen pyynnön mukana
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("phonenumbers-user-token");
+  const token = localStorage.getItem("library-user-token");
   return {
     headers: {
       ...headers,
