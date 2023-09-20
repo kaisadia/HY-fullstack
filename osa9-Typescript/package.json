@@ -1,0 +1,19 @@
+{
+  "name": "osa9-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "calculateBmi": "ts-node bmiCalculator.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.5",
+    "@types/lodash": "^4.14.198",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.6.3",
+    "@types/react": "^18.2.22"
+  }
+}
