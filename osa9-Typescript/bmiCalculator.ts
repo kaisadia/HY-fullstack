@@ -9,4 +9,7 @@ const calculateBmi = (weight: number, height: number): String => {
   } else if (weight / (height * height) > 25) return "Overweigth";
 };
 
-console.log(calculateBmi(58, 1.7));
+const weight: number = Number(process.argv[2]);
+const height: number = Number(process.argv[3]);
+
+console.log(calculateBmi(weight, height));
