@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "calculateBmi": "ts-node bmiCalculator.ts",
-    "calculateExercises": "ts-node exerciseCalculator.ts"
+    "calculateExercises": "ts-node exerciseCalculator.ts",
+    "dev": "ts-node-dev index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,10 @@
     "@types/lodash": "^4.14.198",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.6.3",
-    "@types/react": "^18.2.22"
+    "@types/react": "^18.2.22",
+    "ts-node-dev": "^2.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }

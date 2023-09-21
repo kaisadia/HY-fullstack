@@ -1,12 +1,13 @@
-const calculateBmi = (weight: number, height: number): String => {
-  if (weight / (height * height) < 18.4) {
+export const calculateBmi = (weight: number, height: number): String => {
+  const bmi = weight / (height / 100) ** 2;
+  if (bmi < 18.4) {
     return "Underweight";
-  } else if (
-    weight / (height * height) > 18.4 &&
-    weight / (height * height) < 25
-  ) {
+  } else if (bmi > 18.4 && bmi < 25) {
     return "Normal weight";
-  } else if (weight / (height * height) > 25) return "Overweigth";
+  } else if (bmi > 25) return "Overweight";
+  else {
+    return "Undefined";
+  }
 };
 
 const weight: number = Number(process.argv[2]);
